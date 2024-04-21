@@ -1,42 +1,4 @@
 {
-  "__inputs": [
-    {
-      "name": "DS_PROMETHEUS",
-      "label": "prometheus",
-      "description": "",
-      "type": "datasource",
-      "pluginId": "prometheus",
-      "pluginName": "Prometheus"
-    },
-    {
-      "name": "VAR_INSTANCE",
-      "type": "constant",
-      "label": "Instance",
-      "value": "localhost:9187",
-      "description": ""
-    }
-  ],
-  "__elements": {},
-  "__requires": [
-    {
-      "type": "grafana",
-      "id": "grafana",
-      "name": "Grafana",
-      "version": "10.4.2"
-    },
-    {
-      "type": "datasource",
-      "id": "prometheus",
-      "name": "Prometheus",
-      "version": "1.0.0"
-    },
-    {
-      "type": "panel",
-      "id": "timeseries",
-      "name": "Time series",
-      "version": ""
-    }
-  ],
   "annotations": {
     "list": [
       {
@@ -58,7 +20,7 @@
   "fiscalYearStartMonth": 0,
   "gnetId": 12485,
   "graphTooltip": 0,
-  "id": null,
+  "id": 11,
   "links": [
     {
       "asDropdown": false,
@@ -79,7 +41,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "PBFA97CFB590B2093"
       },
       "fieldConfig": {
         "defaults": {
@@ -159,10 +121,10 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "editorMode": "code",
-          "expr": "rate(pg_stat_bgwriter_buffers_checkpoint[$__rate_interval])*8192",
+          "expr": "rate(pg_stat_bgwriter_buffers_checkpoint_total[$__rate_interval])*8192",
           "instant": false,
           "legendFormat": "Checkpoint",
           "range": true,
@@ -171,10 +133,10 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "editorMode": "code",
-          "expr": "rate(pg_stat_bgwriter_buffers_clean[$__rate_interval])*8192",
+          "expr": "rate(pg_stat_bgwriter_buffers_clean_total[$__rate_interval])*8192",
           "hide": false,
           "instant": false,
           "legendFormat": "BgWriter",
@@ -184,10 +146,10 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "editorMode": "code",
-          "expr": "rate(pg_stat_bgwriter_buffers_backend[$__rate_interval])*8192",
+          "expr": "rate(pg_stat_bgwriter_buffers_backend_total[$__rate_interval])*8192",
           "hide": false,
           "instant": false,
           "legendFormat": "Backends",
@@ -201,7 +163,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "PBFA97CFB590B2093"
       },
       "fieldConfig": {
         "defaults": {
@@ -294,7 +256,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "disableTextWrap": false,
           "editorMode": "code",
@@ -310,7 +272,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "editorMode": "code",
           "expr": "rate(pg_stat_wal_wal_fpi{instance=\"$Instance\"}[$__rate_interval])",
@@ -327,7 +289,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "PBFA97CFB590B2093"
       },
       "description": "* blk_read_time: Time spent reading data file blocks by backends in this database, in milliseconds\n* blk_write_time: Time spent writing data file blocks by backends in this database, in milliseconds\n\ntrack_io_timings needs to be activated",
       "fieldConfig": {
@@ -415,7 +377,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "editorMode": "code",
           "expr": "sum ((rate(pg_stat_database_blk_read_time{instance=\"$Instance\"}[$__rate_interval])))",
@@ -427,7 +389,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "editorMode": "code",
           "expr": "sum ((rate(pg_stat_database_blk_write_time{instance=\"$Instance\"}[$__rate_interval])))",
@@ -443,7 +405,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "Prometheus"
       },
       "description": "Should be 0. If temporary files are created, it can indicate insufficient work_mem. With log_temp_files the creation of temporary files are logged to the PostgreSQL Logfiles.",
       "fieldConfig": {
@@ -578,7 +540,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "editorMode": "code",
           "expr": "sum by (datname) ((rate(pg_stat_database_temp_files{instance=\"$Instance\"}[$__rate_interval])))",
@@ -594,29 +556,35 @@
   ],
   "refresh": "1m",
   "schemaVersion": 39,
-  "tags": [
-    "postgresql"
-  ],
+  "tags": ["postgresql"],
   "templating": {
     "list": [
       {
-        "hide": 2,
-        "name": "Instance",
-        "query": "${VAR_INSTANCE}",
-        "skipUrlSync": false,
-        "type": "constant",
         "current": {
-          "value": "${VAR_INSTANCE}",
-          "text": "${VAR_INSTANCE}",
-          "selected": false
+          "selected": false,
+          "text": "postgres-exporter:9187",
+          "value": "postgres-exporter:9187"
         },
-        "options": [
-          {
-            "value": "${VAR_INSTANCE}",
-            "text": "${VAR_INSTANCE}",
-            "selected": false
-          }
-        ]
+        "datasource": {
+          "type": "prometheus",
+          "uid": "PBFA97CFB590B2093"
+        },
+        "definition": "label_values({job=\"postgres\"},instance)",
+        "hide": 0,
+        "includeAll": false,
+        "multi": false,
+        "name": "Instance",
+        "options": [],
+        "query": {
+          "qryType": 1,
+          "query": "label_values({job=\"postgres\"},instance)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
       }
     ]
   },
@@ -637,7 +605,7 @@
   },
   "timezone": "",
   "title": "IO",
-  "uid": "bdj85zp0ext6oc",
-  "version": 14,
+  "uid": "adjee6ttxwt1ce",
+  "version": 1,
   "weekStart": ""
 }

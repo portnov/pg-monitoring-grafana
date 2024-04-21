@@ -1,48 +1,4 @@
 {
-  "__inputs": [
-    {
-      "name": "DS_PROMETHEUS",
-      "label": "prometheus",
-      "description": "",
-      "type": "datasource",
-      "pluginId": "prometheus",
-      "pluginName": "Prometheus"
-    },
-    {
-      "name": "VAR_INSTANCE",
-      "type": "constant",
-      "label": "Instance",
-      "value": "localhost:9187",
-      "description": ""
-    }
-  ],
-  "__elements": {},
-  "__requires": [
-    {
-      "type": "grafana",
-      "id": "grafana",
-      "name": "Grafana",
-      "version": "10.4.2"
-    },
-    {
-      "type": "datasource",
-      "id": "prometheus",
-      "name": "Prometheus",
-      "version": "1.0.0"
-    },
-    {
-      "type": "panel",
-      "id": "stat",
-      "name": "Stat",
-      "version": ""
-    },
-    {
-      "type": "panel",
-      "id": "timeseries",
-      "name": "Time series",
-      "version": ""
-    }
-  ],
   "annotations": {
     "list": [
       {
@@ -64,7 +20,7 @@
   "fiscalYearStartMonth": 0,
   "gnetId": 12485,
   "graphTooltip": 0,
-  "id": null,
+  "id": 9,
   "links": [
     {
       "asDropdown": false,
@@ -85,7 +41,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "PBFA97CFB590B2093"
       },
       "fieldConfig": {
         "defaults": {
@@ -138,10 +94,10 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "editorMode": "code",
-          "expr": "pg_database_size_bytes{datname=\"$Database\"}",
+          "expr": "pg_database_size_bytes{datname=\"$Database\",server!=\"\"}",
           "instant": false,
           "legendFormat": "{{datname}}",
           "range": true,
@@ -154,7 +110,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "PBFA97CFB590B2093"
       },
       "fieldConfig": {
         "defaults": {
@@ -207,10 +163,10 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "editorMode": "code",
-          "expr": "delta(pg_database_size_bytes{datname=\"$Database\"}[$__range])",
+          "expr": "delta(pg_database_size_bytes{datname=\"$Database\",instance=\"$Instance\",server!=\"\"}[$__range])",
           "instant": false,
           "legendFormat": "{{datname}}",
           "range": true,
@@ -223,7 +179,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "PBFA97CFB590B2093"
       },
       "description": "",
       "fieldConfig": {
@@ -277,10 +233,10 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "editorMode": "code",
-          "expr": "delta(pg_stat_database_active_time{datname=\"$Database\"}[$__range])",
+          "expr": "delta(pg_stat_database_active_time_seconds_total{datname=\"$Database\"}[$__range])",
           "instant": false,
           "legendFormat": "__auto",
           "range": true,
@@ -293,7 +249,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "Prometheus"
       },
       "fieldConfig": {
         "defaults": {
@@ -346,7 +302,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "editorMode": "code",
           "expr": "delta(pg_stat_database_idle_in_transaction_time{datname=\"$Database\"}[$__range])",
@@ -362,7 +318,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "Prometheus"
       },
       "fieldConfig": {
         "defaults": {
@@ -433,7 +389,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "editorMode": "code",
           "expr": "max(pg_database_freeze_age{datname=\"$Database\"})",
@@ -449,7 +405,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "Prometheus"
       },
       "fieldConfig": {
         "defaults": {
@@ -502,7 +458,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "editorMode": "code",
           "expr": "delta(pg_stat_database_blks_read{datname=\"$Database\"}[$__range]) + delta(pg_stat_database_blks_hit{datname=\"$Database\"}[$__range])",
@@ -518,7 +474,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "Prometheus"
       },
       "description": "Transactions committed + roolback per minute\n\nSource: pg_stat_database,xact_commit + xact_rollback",
       "fieldConfig": {
@@ -585,7 +541,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "editorMode": "code",
           "expr": "sum((rate(pg_stat_database_xact_commit{instance=\"$Instance\",datname=\"$Database\"}[$__range])))+sum((rate(pg_stat_database_xact_rollback{instance=\"$Instance\",datname=\"$Database\"}[$__range])))",
@@ -601,7 +557,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "Prometheus"
       },
       "fieldConfig": {
         "defaults": {
@@ -680,7 +636,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "editorMode": "code",
           "expr": "sum by (state) (pg_stat_activity_count{datname=\"$Database\"})",
@@ -696,35 +652,45 @@
   ],
   "refresh": "1m",
   "schemaVersion": 39,
-  "tags": [
-    "postgresql"
-  ],
+  "tags": ["postgresql"],
   "templating": {
     "list": [
       {
-        "hide": 2,
-        "name": "Instance",
-        "query": "${VAR_INSTANCE}",
-        "skipUrlSync": false,
-        "type": "constant",
         "current": {
-          "value": "${VAR_INSTANCE}",
-          "text": "${VAR_INSTANCE}",
-          "selected": false
+          "selected": false,
+          "text": "postgres-exporter:9187",
+          "value": "postgres-exporter:9187"
         },
-        "options": [
-          {
-            "value": "${VAR_INSTANCE}",
-            "text": "${VAR_INSTANCE}",
-            "selected": false
-          }
-        ]
-      },
-      {
-        "current": {},
         "datasource": {
           "type": "prometheus",
-          "uid": "${DS_PROMETHEUS}"
+          "uid": "PBFA97CFB590B2093"
+        },
+        "definition": "label_values({job=\"postgres\"},instance)",
+        "hide": 0,
+        "includeAll": false,
+        "multi": false,
+        "name": "Instance",
+        "options": [],
+        "query": {
+          "qryType": 1,
+          "query": "label_values({job=\"postgres\"},instance)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "pg_profile",
+          "value": "pg_profile"
+        },
+        "datasource": {
+          "type": "prometheus",
+          "uid": "Prometheus"
         },
         "definition": "label_values(datname)",
         "hide": 0,
@@ -762,7 +728,7 @@
   },
   "timezone": "",
   "title": "Database Overview",
-  "uid": "cdjb61hlxotfka",
-  "version": 9,
+  "uid": "fdjbz1qqsqhogd",
+  "version": 4,
   "weekStart": ""
 }
