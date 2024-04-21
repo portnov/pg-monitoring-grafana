@@ -3,7 +3,7 @@ services:
   grafana:
     image: grafana/grafana-oss
     ports:
-      - "3000:3000"
+      - "${GRAFANA_PORT}:3000"
     volumes:
       - "./grafana/dashboards.yml:/etc/grafana/provisioning/dashboards/main.yml"
       - "./grafana/dashboards:/var/lib/grafana/dashboards"
@@ -35,7 +35,7 @@ services:
       - "host.docker.internal:host-gateway"
     environment:
       NO_PROXY: localhost,127.0.0.1,prometheus,postgres-exporter
-      DATA_SOURCE_NAME: postgresql://prometheus:prometheus@host.docker.internal:5432/portnov
+      DATA_SOURCE_NAME: ${PG_URI}
       PG_EXPORTER_EXTEND_QUERY_PATH: /etc/postgres_exporter/queries.yaml
 
 networks:
