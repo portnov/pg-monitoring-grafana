@@ -1,35 +1,4 @@
 {
-  "__inputs": [
-    {
-      "name": "DS_PROMETHEUS",
-      "label": "prometheus",
-      "description": "",
-      "type": "datasource",
-      "pluginId": "prometheus",
-      "pluginName": "Prometheus"
-    }
-  ],
-  "__elements": {},
-  "__requires": [
-    {
-      "type": "grafana",
-      "id": "grafana",
-      "name": "Grafana",
-      "version": "10.4.2"
-    },
-    {
-      "type": "datasource",
-      "id": "prometheus",
-      "name": "Prometheus",
-      "version": "1.0.0"
-    },
-    {
-      "type": "panel",
-      "id": "timeseries",
-      "name": "Time series",
-      "version": ""
-    }
-  ],
   "annotations": {
     "list": [
       {
@@ -49,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": null,
+  "id": 8,
   "links": [
     {
       "asDropdown": false,
@@ -83,7 +52,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "Prometheus"
+        "uid": "PBFA97CFB590B2093"
       },
       "fieldConfig": {
         "defaults": {
@@ -165,7 +134,7 @@
             "uid": "Prometheus"
           },
           "editorMode": "code",
-          "expr": "rate(pg_stat_user_tables_seq_scan{datname=\"$Database\"}[$__rate_interval])",
+          "expr": "rate(pg_stat_user_tables_seq_scan{datname=\"$Database\",server!=\"\"}[$__rate_interval])",
           "instant": false,
           "legendFormat": "{{relname}}",
           "range": true,
@@ -178,7 +147,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "Prometheus"
+        "uid": "PBFA97CFB590B2093"
       },
       "fieldConfig": {
         "defaults": {
@@ -260,7 +229,7 @@
             "uid": "Prometheus"
           },
           "editorMode": "code",
-          "expr": "rate(pg_stat_user_tables_n_tup_ins{datname=\"$Database\"}[$__rate_interval]) > 0",
+          "expr": "rate(pg_stat_user_tables_n_tup_ins{datname=\"$Database\",server!=\"\"}[$__rate_interval]) > 0",
           "instant": false,
           "legendFormat": "{{relname}}",
           "range": true,
@@ -273,7 +242,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "Prometheus"
+        "uid": "PBFA97CFB590B2093"
       },
       "fieldConfig": {
         "defaults": {
@@ -355,7 +324,7 @@
             "uid": "Prometheus"
           },
           "editorMode": "code",
-          "expr": "rate(pg_stat_user_tables_idx_scan{datname=\"$Database\"}[$__rate_interval]) > 1",
+          "expr": "rate(pg_stat_user_tables_idx_scan{datname=\"$Database\",server!=\"\"}[$__rate_interval]) > 1",
           "instant": false,
           "legendFormat": "{{relname}}",
           "range": true,
@@ -368,7 +337,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "Prometheus"
+        "uid": "PBFA97CFB590B2093"
       },
       "fieldConfig": {
         "defaults": {
@@ -450,7 +419,7 @@
             "uid": "Prometheus"
           },
           "editorMode": "code",
-          "expr": "rate(pg_stat_user_tables_n_tup_upd{datname=\"$Database\"}[$__rate_interval]) > 0",
+          "expr": "rate(pg_stat_user_tables_n_tup_upd{datname=\"$Database\",server!=\"\"}[$__rate_interval]) > 0",
           "instant": false,
           "legendFormat": "{{relname}}",
           "range": true,
@@ -463,7 +432,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "Prometheus"
+        "uid": "PBFA97CFB590B2093"
       },
       "fieldConfig": {
         "defaults": {
@@ -545,7 +514,7 @@
             "uid": "Prometheus"
           },
           "editorMode": "code",
-          "expr": "rate(pg_stat_user_tables_n_tup_del{datname=\"$Database\"}[$__rate_interval]) > 0",
+          "expr": "rate(pg_stat_user_tables_n_tup_del{datname=\"$Database\",server!=\"\"}[$__rate_interval]) > 0",
           "instant": false,
           "legendFormat": "{{relname}}",
           "range": true,
@@ -947,13 +916,15 @@
   ],
   "refresh": "30s",
   "schemaVersion": 39,
-  "tags": [
-    "postgresql"
-  ],
+  "tags": ["postgresql"],
   "templating": {
     "list": [
       {
-        "current": {},
+        "current": {
+          "selected": false,
+          "text": "portnov",
+          "value": "portnov"
+        },
         "datasource": {
           "type": "prometheus",
           "uid": "Prometheus"
@@ -978,13 +949,13 @@
     ]
   },
   "time": {
-    "from": "now-1h",
+    "from": "now-5m",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "browser",
   "title": "Top Tables",
-  "uid": "adj8ius7zn3eob",
-  "version": 19,
+  "uid": "cdjehml5rudq8f",
+  "version": 1,
   "weekStart": ""
 }
