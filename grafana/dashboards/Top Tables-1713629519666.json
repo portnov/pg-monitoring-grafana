@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 8,
+  "id": 13,
   "links": [
     {
       "asDropdown": false,
@@ -134,7 +134,7 @@
             "uid": "Prometheus"
           },
           "editorMode": "code",
-          "expr": "rate(pg_stat_user_tables_seq_scan{datname=\"$Database\",server!=\"\"}[$__rate_interval])",
+          "expr": "topk($Top, rate(pg_stat_user_tables_seq_scan{datname=\"$Database\",server=\"$Server\",instance=\"$Instance\"}[$__rate_interval]))",
           "instant": false,
           "legendFormat": "{{relname}}",
           "range": true,
@@ -229,7 +229,7 @@
             "uid": "Prometheus"
           },
           "editorMode": "code",
-          "expr": "rate(pg_stat_user_tables_n_tup_ins{datname=\"$Database\",server!=\"\"}[$__rate_interval]) > 0",
+          "expr": "topk($Top, rate(pg_stat_user_tables_n_tup_ins{datname=\"$Database\",server=\"$Server\",instance=\"$Instance\"}[$__rate_interval]))",
           "instant": false,
           "legendFormat": "{{relname}}",
           "range": true,
@@ -324,7 +324,7 @@
             "uid": "Prometheus"
           },
           "editorMode": "code",
-          "expr": "rate(pg_stat_user_tables_idx_scan{datname=\"$Database\",server!=\"\"}[$__rate_interval]) > 1",
+          "expr": "topk($Top, rate(pg_stat_user_tables_idx_scan{datname=\"$Database\",server=\"$Server\",instance=\"$Instance\"}[$__rate_interval]))",
           "instant": false,
           "legendFormat": "{{relname}}",
           "range": true,
@@ -419,7 +419,7 @@
             "uid": "Prometheus"
           },
           "editorMode": "code",
-          "expr": "rate(pg_stat_user_tables_n_tup_upd{datname=\"$Database\",server!=\"\"}[$__rate_interval]) > 0",
+          "expr": "topk($Top, rate(pg_stat_user_tables_n_tup_upd{datname=\"$Database\",server=\"$Server\",instance=\"$Instance\"}[$__rate_interval]))",
           "instant": false,
           "legendFormat": "{{relname}}",
           "range": true,
@@ -514,7 +514,7 @@
             "uid": "Prometheus"
           },
           "editorMode": "code",
-          "expr": "rate(pg_stat_user_tables_n_tup_del{datname=\"$Database\",server!=\"\"}[$__rate_interval]) > 0",
+          "expr": "topk($Top, rate(pg_stat_user_tables_n_tup_del{datname=\"$Database\",server=\"$Server\",instance=\"$Instance\"}[$__rate_interval]))",
           "instant": false,
           "legendFormat": "{{relname}}",
           "range": true,
@@ -540,7 +540,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "Prometheus"
+        "uid": "PBFA97CFB590B2093"
       },
       "fieldConfig": {
         "defaults": {
@@ -621,7 +621,7 @@
             "uid": "Prometheus"
           },
           "editorMode": "code",
-          "expr": "rate(pg_statio_user_tables_heap_blks_hit{datname=\"$Database\"}[$__rate_interval]) > 1",
+          "expr": "topk($Top, rate(pg_statio_user_tables_heap_blks_hit{datname=\"$Database\",server=\"$Server\",instance=\"$Instance\"}[$__rate_interval]))",
           "instant": false,
           "legendFormat": "{{relname}}",
           "range": true,
@@ -634,7 +634,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "Prometheus"
+        "uid": "PBFA97CFB590B2093"
       },
       "fieldConfig": {
         "defaults": {
@@ -715,7 +715,7 @@
             "uid": "Prometheus"
           },
           "editorMode": "code",
-          "expr": "rate(pg_statio_user_tables_idx_blks_hit{datname=\"$Database\"}[$__rate_interval]) > 1",
+          "expr": "topk($Top, rate(pg_statio_user_tables_idx_blks_hit{datname=\"$Database\",server=\"$Server\",instance=\"$Instance\"}[$__rate_interval]))",
           "instant": false,
           "legendFormat": "{{relname}}",
           "range": true,
@@ -728,7 +728,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "Prometheus"
+        "uid": "PBFA97CFB590B2093"
       },
       "fieldConfig": {
         "defaults": {
@@ -779,7 +779,8 @@
                 "value": 80
               }
             ]
-          }
+          },
+          "unit": "binBps"
         },
         "overrides": []
       },
@@ -809,20 +810,20 @@
             "uid": "Prometheus"
           },
           "editorMode": "code",
-          "expr": "rate(pg_statio_user_tables_heap_blks_read{datname=\"$Database\"}[$__rate_interval]) > 0",
+          "expr": "topk($Top, 8192*rate(pg_statio_user_tables_heap_blks_read{datname=\"$Database\",server=\"$Server\",instance=\"$Instance\"}[$__rate_interval]))",
           "instant": false,
           "legendFormat": "{{relname}}",
           "range": true,
           "refId": "A"
         }
       ],
-      "title": "Heap Blocks Read",
+      "title": "Heap Reads",
       "type": "timeseries"
     },
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "Prometheus"
+        "uid": "PBFA97CFB590B2093"
       },
       "fieldConfig": {
         "defaults": {
@@ -873,7 +874,8 @@
                 "value": 80
               }
             ]
-          }
+          },
+          "unit": "binBps"
         },
         "overrides": []
       },
@@ -903,14 +905,14 @@
             "uid": "Prometheus"
           },
           "editorMode": "code",
-          "expr": "rate(pg_statio_user_tables_idx_blks_read{datname=\"$Database\"}[$__rate_interval]) > 1",
+          "expr": "topk($Top, 8192*rate(pg_statio_user_tables_idx_blks_read{datname=\"$Database\",server=\"$Server\",instance=\"$Instance\"}[$__rate_interval]))",
           "instant": false,
           "legendFormat": "{{relname}}",
           "range": true,
           "refId": "A"
         }
       ],
-      "title": "Index Blocks Read",
+      "title": "Index Reads",
       "type": "timeseries"
     }
   ],
@@ -919,6 +921,61 @@
   "tags": ["postgresql"],
   "templating": {
     "list": [
+      {
+        "current": {
+          "selected": false,
+          "text": "host.docker.internal:5432",
+          "value": "host.docker.internal:5432"
+        },
+        "datasource": {
+          "type": "prometheus",
+          "uid": "PBFA97CFB590B2093"
+        },
+        "definition": "label_values({job=\"postgres\"},server)",
+        "hide": 2,
+        "includeAll": false,
+        "multi": false,
+        "name": "Server",
+        "options": [],
+        "query": {
+          "qryType": 1,
+          "query": "label_values({job=\"postgres\"},server)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "postgres-exporter:9187",
+          "value": "postgres-exporter:9187"
+        },
+        "datasource": {
+          "type": "prometheus",
+          "uid": "PBFA97CFB590B2093"
+        },
+        "definition": "label_values({job=\"postgres\"},instance)",
+        "hide": 2,
+        "includeAll": false,
+        "label": "Exporter",
+        "multi": false,
+        "name": "Instance",
+        "options": [],
+        "query": {
+          "qryType": 1,
+          "query": "label_values({job=\"postgres\"},instance)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
       {
         "current": {
           "selected": false,
@@ -945,6 +1002,48 @@
         "skipUrlSync": false,
         "sort": 0,
         "type": "query"
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "10",
+          "value": "10"
+        },
+        "hide": 0,
+        "includeAll": false,
+        "multi": false,
+        "name": "Top",
+        "options": [
+          {
+            "selected": true,
+            "text": "10",
+            "value": "10"
+          },
+          {
+            "selected": false,
+            "text": "20",
+            "value": "20"
+          },
+          {
+            "selected": false,
+            "text": "30",
+            "value": "30"
+          },
+          {
+            "selected": false,
+            "text": "50",
+            "value": "50"
+          },
+          {
+            "selected": false,
+            "text": "100",
+            "value": "100"
+          }
+        ],
+        "query": "10,20,30,50,100",
+        "queryValue": "",
+        "skipUrlSync": false,
+        "type": "custom"
       }
     ]
   },
@@ -954,8 +1053,8 @@
   },
   "timepicker": {},
   "timezone": "browser",
-  "title": "Top Tables",
-  "uid": "cdjehml5rudq8f",
-  "version": 1,
+  "title": "Database Top Tables",
+  "uid": "adjizowl9j2f4b",
+  "version": 8,
   "weekStart": ""
 }

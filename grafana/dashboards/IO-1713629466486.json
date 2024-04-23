@@ -20,6 +20,7 @@
   "fiscalYearStartMonth": 0,
   "gnetId": 12485,
   "graphTooltip": 0,
+  "id": 11,
   "links": [
     {
       "asDropdown": false,
@@ -37,6 +38,124 @@
     }
   ],
   "panels": [
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "description": "Shows volume read from data files (including OS page cache hits)",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 20,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "normal"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "binBps"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byValue",
+              "options": {
+                "op": "gte",
+                "reducer": "allIsZero",
+                "value": 0
+              }
+            },
+            "properties": [
+              {
+                "id": "custom.hideFrom",
+                "value": {
+                  "legend": true,
+                  "tooltip": true,
+                  "viz": true
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 0,
+        "y": 0
+      },
+      "id": 294,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "expr": "8192*rate(pg_stat_database_blks_read{instance=\"$Instance\"}[$__rate_interval])",
+          "instant": false,
+          "legendFormat": "{{datname}}",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Data File Reads",
+      "type": "timeseries"
+    },
     {
       "datasource": {
         "type": "prometheus",
@@ -98,9 +217,9 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 7,
-        "w": 24,
-        "x": 0,
+        "h": 9,
+        "w": 12,
+        "x": 12,
         "y": 0
       },
       "id": 293,
@@ -112,7 +231,7 @@
           "showLegend": true
         },
         "tooltip": {
-          "mode": "single",
+          "mode": "multi",
           "sort": "none"
         }
       },
@@ -123,7 +242,7 @@
             "uid": "Prometheus"
           },
           "editorMode": "code",
-          "expr": "rate(pg_stat_bgwriter_buffers_checkpoint_total[$__rate_interval])*8192",
+          "expr": "rate(pg_stat_bgwriter_buffers_checkpoint_total{instance=\"$Instance\"}[$__rate_interval])*8192",
           "instant": false,
           "legendFormat": "Checkpoint",
           "range": true,
@@ -135,7 +254,7 @@
             "uid": "Prometheus"
           },
           "editorMode": "code",
-          "expr": "rate(pg_stat_bgwriter_buffers_clean_total[$__rate_interval])*8192",
+          "expr": "rate(pg_stat_bgwriter_buffers_clean_total{instance=\"$Instance\"}[$__rate_interval])*8192",
           "hide": false,
           "instant": false,
           "legendFormat": "BgWriter",
@@ -148,7 +267,7 @@
             "uid": "Prometheus"
           },
           "editorMode": "code",
-          "expr": "rate(pg_stat_bgwriter_buffers_backend_total[$__rate_interval])*8192",
+          "expr": "rate(pg_stat_bgwriter_buffers_backend_total{instance=\"$Instance\"}[$__rate_interval])*8192",
           "hide": false,
           "instant": false,
           "legendFormat": "Backends",
@@ -157,6 +276,124 @@
         }
       ],
       "title": "Data File Writes",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 20,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "normal"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "binBps"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byValue",
+              "options": {
+                "op": "gte",
+                "reducer": "allIsZero",
+                "value": 0
+              }
+            },
+            "properties": [
+              {
+                "id": "custom.hideFrom",
+                "value": {
+                  "legend": true,
+                  "tooltip": true,
+                  "viz": true
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 0,
+        "y": 9
+      },
+      "id": 295,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "expr": "8192*rate(pg_stat_bgwriter_buffers_alloc_total{instance=\"$Instance\"}[$__rate_interval])",
+          "instant": false,
+          "legendFormat": "Bytes Allocated",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Shared Buffer Allocations",
       "type": "timeseries"
     },
     {
@@ -226,17 +463,17 @@
             "properties": [
               {
                 "id": "unit",
-                "value": "none"
+                "value": "wps"
               }
             ]
           }
         ]
       },
       "gridPos": {
-        "h": 7,
-        "w": 24,
-        "x": 0,
-        "y": 7
+        "h": 9,
+        "w": 12,
+        "x": 12,
+        "y": 9
       },
       "id": 172,
       "options": {
@@ -259,7 +496,7 @@
           },
           "disableTextWrap": false,
           "editorMode": "code",
-          "expr": "rate(pg_stat_wal_wal_bytes{instance=\"$Instance\"}[$__rate_interval])",
+          "expr": "rate(pg_stat_wal_wal_bytes{instance=\"$Instance\",server=\"$Server\"}[$__rate_interval])",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
           "instant": false,
@@ -274,7 +511,7 @@
             "uid": "Prometheus"
           },
           "editorMode": "code",
-          "expr": "rate(pg_stat_wal_wal_fpi{instance=\"$Instance\"}[$__rate_interval])",
+          "expr": "rate(pg_stat_wal_wal_fpi{instance=\"$Instance\",server=\"$Server\"}[$__rate_interval])",
           "hide": false,
           "instant": false,
           "legendFormat": "WAL FPI",
@@ -352,7 +589,7 @@
         "h": 9,
         "w": 12,
         "x": 0,
-        "y": 14
+        "y": 18
       },
       "id": 26,
       "options": {
@@ -404,7 +641,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "Prometheus"
+        "uid": "PBFA97CFB590B2093"
       },
       "description": "Should be 0. If temporary files are created, it can indicate insufficient work_mem. With log_temp_files the creation of temporary files are logged to the PostgreSQL Logfiles.",
       "fieldConfig": {
@@ -438,7 +675,7 @@
             "spanNulls": false,
             "stacking": {
               "group": "A",
-              "mode": "none"
+              "mode": "normal"
             },
             "thresholdsStyle": {
               "mode": "off"
@@ -509,7 +746,7 @@
         "h": 9,
         "w": 12,
         "x": 12,
-        "y": 14
+        "y": 18
       },
       "id": 31,
       "links": [
@@ -555,9 +792,7 @@
   ],
   "refresh": "1m",
   "schemaVersion": 39,
-  "tags": [
-    "postgresql"
-  ],
+  "tags": ["postgresql"],
   "templating": {
     "list": [
       {
@@ -571,8 +806,9 @@
           "uid": "PBFA97CFB590B2093"
         },
         "definition": "label_values({job=\"postgres\"},instance)",
-        "hide": 0,
+        "hide": 2,
         "includeAll": false,
+        "label": "Exporter",
         "multi": false,
         "name": "Instance",
         "options": [],
@@ -586,11 +822,38 @@
         "skipUrlSync": false,
         "sort": 0,
         "type": "query"
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "host.docker.internal:5432",
+          "value": "host.docker.internal:5432"
+        },
+        "datasource": {
+          "type": "prometheus",
+          "uid": "PBFA97CFB590B2093"
+        },
+        "definition": "label_values({job=\"postgres\"},server)",
+        "hide": 2,
+        "includeAll": false,
+        "multi": false,
+        "name": "Server",
+        "options": [],
+        "query": {
+          "qryType": 1,
+          "query": "label_values({job=\"postgres\"},server)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
       }
     ]
   },
   "time": {
-    "from": "now-5m",
+    "from": "now-15m",
     "to": "now"
   },
   "timepicker": {
@@ -605,8 +868,8 @@
     ]
   },
   "timezone": "",
-  "title": "IO",
-  "uid": "adjee6ttxwt1ce",
-  "version": 1,
+  "title": "Cluster IO",
+  "uid": "adjivxfdo8jcwe",
+  "version": 8,
   "weekStart": ""
 }

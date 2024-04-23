@@ -1,35 +1,4 @@
 {
-  "__inputs": [
-    {
-      "name": "DS_PROMETHEUS",
-      "label": "prometheus",
-      "description": "",
-      "type": "datasource",
-      "pluginId": "prometheus",
-      "pluginName": "Prometheus"
-    }
-  ],
-  "__elements": {},
-  "__requires": [
-    {
-      "type": "grafana",
-      "id": "grafana",
-      "name": "Grafana",
-      "version": "10.4.2"
-    },
-    {
-      "type": "datasource",
-      "id": "prometheus",
-      "name": "Prometheus",
-      "version": "1.0.0"
-    },
-    {
-      "type": "panel",
-      "id": "timeseries",
-      "name": "Time series",
-      "version": ""
-    }
-  ],
   "annotations": {
     "list": [
       {
@@ -49,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": null,
+  "id": 12,
   "links": [
     {
       "asDropdown": false,
@@ -70,7 +39,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "Prometheus"
+        "uid": "PBFA97CFB590B2093"
       },
       "fieldConfig": {
         "defaults": {
@@ -154,7 +123,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "rate(pg_stat_kcache_plan_user_time{datname=\"$Database\"}[$__rate_interval])",
+          "expr": "rate(pg_stat_kcache_plan_user_time{datname=\"$Database\",instance=\"$Instance\",server=\"$Server\"}[$__rate_interval])",
           "instant": false,
           "legendFormat": "Plan User Time",
           "range": true,
@@ -166,7 +135,7 @@
             "uid": "Prometheus"
           },
           "editorMode": "code",
-          "expr": "rate(pg_stat_kcache_plan_system_time{datname=\"$Database\"}[$__rate_interval])",
+          "expr": "rate(pg_stat_kcache_plan_system_time{datname=\"$Database\",instance=\"$Instance\",server=\"$Server\"}[$__rate_interval])",
           "hide": false,
           "instant": false,
           "legendFormat": "Plan System Time",
@@ -179,7 +148,7 @@
             "uid": "Prometheus"
           },
           "editorMode": "code",
-          "expr": "rate(pg_stat_kcache_exec_user_time{datname=\"$Database\"}[$__rate_interval])",
+          "expr": "rate(pg_stat_kcache_exec_user_time{datname=\"$Database\",instance=\"$Instance\",server=\"$Server\"}[$__rate_interval])",
           "hide": false,
           "instant": false,
           "legendFormat": "Execution User Time",
@@ -192,7 +161,7 @@
             "uid": "Prometheus"
           },
           "editorMode": "code",
-          "expr": "rate(pg_stat_kcache_exec_system_time{datname=\"$Database\"}[$__rate_interval])",
+          "expr": "rate(pg_stat_kcache_exec_system_time{datname=\"$Database\",instance=\"$Instance\",server=\"$Server\"}[$__rate_interval])",
           "hide": false,
           "instant": false,
           "legendFormat": "Execution System Time",
@@ -206,7 +175,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "Prometheus"
+        "uid": "PBFA97CFB590B2093"
       },
       "fieldConfig": {
         "defaults": {
@@ -259,7 +228,7 @@
               }
             ]
           },
-          "unit": "decbytes"
+          "unit": "binBps"
         },
         "overrides": []
       },
@@ -290,7 +259,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "rate(pg_stat_kcache_plan_reads{datname=\"$Database\"}[$__rate_interval])",
+          "expr": "rate(pg_stat_kcache_plan_reads{datname=\"$Database\",instance=\"$Instance\",server=\"$Server\"}[$__rate_interval])",
           "instant": false,
           "legendFormat": "Plan Reads",
           "range": true,
@@ -302,7 +271,7 @@
             "uid": "Prometheus"
           },
           "editorMode": "code",
-          "expr": "rate(pg_stat_kcache_exec_reads{datname=\"$Database\"}[$__rate_interval])",
+          "expr": "rate(pg_stat_kcache_exec_reads{datname=\"$Database\",instance=\"$Instance\",server=\"$Server\"}[$__rate_interval])",
           "hide": false,
           "instant": false,
           "legendFormat": "Execution Reads",
@@ -310,13 +279,13 @@
           "refId": "B"
         }
       ],
-      "title": "Queries Reads",
+      "title": "Disk Reads",
       "type": "timeseries"
     },
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "Prometheus"
+        "uid": "PBFA97CFB590B2093"
       },
       "fieldConfig": {
         "defaults": {
@@ -369,7 +338,7 @@
               }
             ]
           },
-          "unit": "decbytes"
+          "unit": "binBps"
         },
         "overrides": []
       },
@@ -400,7 +369,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "rate(pg_stat_kcache_plan_writes{datname=\"$Database\"}[$__rate_interval])",
+          "expr": "rate(pg_stat_kcache_plan_writes{datname=\"$Database\",instance=\"$Instance\",server=\"$Server\"}[$__rate_interval])",
           "instant": false,
           "legendFormat": "Plan Writes",
           "range": true,
@@ -412,7 +381,7 @@
             "uid": "Prometheus"
           },
           "editorMode": "code",
-          "expr": "rate(pg_stat_kcache_exec_writes{datname=\"$Database\"}[$__rate_interval])",
+          "expr": "rate(pg_stat_kcache_exec_writes{datname=\"$Database\",instance=\"$Instance\",server=\"$Server\"}[$__rate_interval])",
           "hide": false,
           "instant": false,
           "legendFormat": "Execution Writes",
@@ -420,32 +389,89 @@
           "refId": "B"
         }
       ],
-      "title": "Queries Writes",
+      "title": "Disk Writes",
       "type": "timeseries"
     }
   ],
-  "refresh": "30s",
+  "refresh": "",
   "schemaVersion": 39,
-  "tags": [
-    "postgresql"
-  ],
+  "tags": ["postgresql"],
   "templating": {
     "list": [
       {
-        "current": {},
+        "current": {
+          "selected": false,
+          "text": "postgres-exporter:9187",
+          "value": "postgres-exporter:9187"
+        },
+        "datasource": {
+          "type": "prometheus",
+          "uid": "PBFA97CFB590B2093"
+        },
+        "definition": "label_values({job=\"postgres\"},instance)",
+        "hide": 2,
+        "includeAll": false,
+        "label": "Exporter",
+        "multi": false,
+        "name": "Instance",
+        "options": [],
+        "query": {
+          "qryType": 1,
+          "query": "label_values({job=\"postgres\"},instance)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "portnov",
+          "value": "portnov"
+        },
         "datasource": {
           "type": "prometheus",
           "uid": "Prometheus"
         },
-        "definition": "label_values(datname)",
+        "definition": "label_values({job=\"postgres\"},datname)",
         "hide": 0,
-        "includeAll": true,
+        "includeAll": false,
         "multi": false,
         "name": "Database",
         "options": [],
         "query": {
           "qryType": 1,
-          "query": "label_values(datname)",
+          "query": "label_values({job=\"postgres\"},datname)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "host.docker.internal:5432",
+          "value": "host.docker.internal:5432"
+        },
+        "datasource": {
+          "type": "prometheus",
+          "uid": "PBFA97CFB590B2093"
+        },
+        "definition": "label_values({job=\"postgres\"},server)",
+        "hide": 2,
+        "includeAll": false,
+        "multi": false,
+        "name": "Server",
+        "options": [],
+        "query": {
+          "qryType": 1,
+          "query": "label_values({job=\"postgres\"},server)",
           "refId": "PrometheusVariableQueryEditor-VariableQuery"
         },
         "refresh": 1,
@@ -462,8 +488,8 @@
   },
   "timepicker": {},
   "timezone": "browser",
-  "title": "System Resources",
-  "uid": "ddj9pmw763ev4e",
-  "version": 19,
+  "title": "System Resources Copy",
+  "uid": "fdjizgh9zw3cwc",
+  "version": 3,
   "weekStart": ""
 }

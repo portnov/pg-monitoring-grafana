@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 8,
+  "id": 14,
   "links": [
     {
       "asDropdown": false,
@@ -41,101 +41,7 @@
         "type": "prometheus",
         "uid": "PBFA97CFB590B2093"
       },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "never",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 10,
-        "w": 24,
-        "x": 0,
-        "y": 0
-      },
-      "id": 2,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "table",
-          "placement": "right",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "Prometheus"
-          },
-          "editorMode": "code",
-          "expr": "rate(pg_stat_user_tables_n_dead_tup{datname=\"$Database\",server!=\"\"}[$__rate_interval]) != 0",
-          "instant": false,
-          "legendFormat": "{{relname}}",
-          "range": true,
-          "refId": "A"
-        }
-      ],
-      "title": "Dead Tuples Growth by Table",
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PBFA97CFB590B2093"
-      },
+      "description": "Shows growth of number of dead tuples per table.\nNote 1: this is in fact a derivative of number of dead tuples. So, if this graph shows constant value, this means that number of dead tuples grows linear. If this graph shows growth, it means number of dead tuples grows quadratically.\nNote 2: Negative values indicate that vacuum does it's job.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -164,7 +70,7 @@
               "type": "linear"
             },
             "showPoints": "never",
-            "spanNulls": false,
+            "spanNulls": 3600000,
             "stacking": {
               "group": "A",
               "mode": "none"
@@ -184,6 +90,156 @@
               {
                 "color": "red",
                 "value": 80
+              }
+            ]
+          },
+          "unit": "rowsps"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byValue",
+              "options": {
+                "op": "gte",
+                "reducer": "allIsZero",
+                "value": 0
+              }
+            },
+            "properties": [
+              {
+                "id": "custom.hideFrom",
+                "value": {
+                  "legend": true,
+                  "tooltip": true,
+                  "viz": true
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byValue",
+              "options": {
+                "op": "gte",
+                "reducer": "allIsNull",
+                "value": 0
+              }
+            },
+            "properties": [
+              {
+                "id": "custom.hideFrom",
+                "value": {
+                  "legend": true,
+                  "tooltip": true,
+                  "viz": true
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 4,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "Prometheus"
+          },
+          "editorMode": "code",
+          "expr": "delta(pg_stat_user_tables_n_dead_tup{datname=\"$Database\",server=\"$Server\",instance=\"$Instance\"}[$__rate_interval])",
+          "instant": false,
+          "legendFormat": "{{relname}}",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Dead Tuples Growth by Table",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "description": "Shows top $Top tables with highest percentage of dead tuples over total number of tuples in the table.\nNote: this considers only number of tuples, not their size. So if it shows high numbers for a very small table, it may mean nothing.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "smooth",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "area"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 10
+              },
+              {
+                "color": "#EAB839",
+                "value": 20
+              },
+              {
+                "color": "orange",
+                "value": 100
+              },
+              {
+                "color": "red",
+                "value": 1000
               }
             ]
           },
@@ -217,7 +273,7 @@
             "uid": "PBFA97CFB590B2093"
           },
           "editorMode": "code",
-          "expr": "topk(50, 100*(pg_stat_user_tables_n_dead_tup{datname=\"portnov\",server!=\"\"} / (pg_stat_user_tables_n_live_tup{datname=\"portnov\",server!=\"\"} != 0 + pg_stat_user_tables_n_dead_tup{datname=\"portnov\",server!=\"\"} > 50)))",
+          "expr": "topk($Top, 100*(pg_stat_user_tables_n_dead_tup{datname=\"portnov\",server=\"$Server\",instance=\"$Instance\"} / (pg_stat_user_tables_n_live_tup{datname=\"portnov\",server=\"$Server\",instance=\"$Instance\"} != 0 + pg_stat_user_tables_n_dead_tup{datname=\"portnov\",server=\"$Server\",instance=\"$Instance\"} > 50)))",
           "instant": false,
           "legendFormat": "{{schemaname}}.{{relname}}",
           "range": true,
@@ -232,6 +288,7 @@
         "type": "prometheus",
         "uid": "PBFA97CFB590B2093"
       },
+      "description": "Displays number of autovacuum invocations per table. Only top $Top tables where autovacuum is most active are shown.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -282,9 +339,31 @@
                 "value": 80
               }
             ]
-          }
+          },
+          "unit": "eps"
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byValue",
+              "options": {
+                "op": "gte",
+                "reducer": "allIsZero",
+                "value": 0
+              }
+            },
+            "properties": [
+              {
+                "id": "custom.hideFrom",
+                "value": {
+                  "legend": true,
+                  "tooltip": true,
+                  "viz": true
+                }
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 9,
@@ -312,7 +391,7 @@
             "uid": "Prometheus"
           },
           "editorMode": "code",
-          "expr": "rate(pg_stat_user_tables_autovacuum_count{datname=\"$Database\",server!=\"\"}[$__rate_interval]) != 0",
+          "expr": "topk($Top, rate(pg_stat_user_tables_autovacuum_count{datname=\"$Database\",server=\"$Server\",instance=\"$Instance\"}[$__rate_interval]))",
           "instant": false,
           "legendFormat": "{{relname}}",
           "range": true,
@@ -331,22 +410,23 @@
       {
         "current": {
           "selected": false,
-          "text": "portnov",
-          "value": "portnov"
+          "text": "postgres-exporter:9187",
+          "value": "postgres-exporter:9187"
         },
         "datasource": {
           "type": "prometheus",
-          "uid": "Prometheus"
+          "uid": "PBFA97CFB590B2093"
         },
-        "definition": "label_values(datname)",
-        "hide": 0,
+        "definition": "label_values({job=\"postgres\"},instance)",
+        "hide": 2,
         "includeAll": false,
+        "label": "Exporter",
         "multi": false,
-        "name": "Database",
+        "name": "Instance",
         "options": [],
         "query": {
           "qryType": 1,
-          "query": "label_values(datname)",
+          "query": "label_values({job=\"postgres\"},instance)",
           "refId": "PrometheusVariableQueryEditor-VariableQuery"
         },
         "refresh": 1,
@@ -354,17 +434,113 @@
         "skipUrlSync": false,
         "sort": 0,
         "type": "query"
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "host.docker.internal:5432",
+          "value": "host.docker.internal:5432"
+        },
+        "datasource": {
+          "type": "prometheus",
+          "uid": "PBFA97CFB590B2093"
+        },
+        "definition": "label_values({job=\"postgres\"},server)",
+        "hide": 2,
+        "includeAll": false,
+        "multi": false,
+        "name": "Server",
+        "options": [],
+        "query": {
+          "qryType": 1,
+          "query": "label_values({job=\"postgres\"},server)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "portnov",
+          "value": "portnov"
+        },
+        "datasource": {
+          "type": "prometheus",
+          "uid": "Prometheus"
+        },
+        "definition": "label_values({job=\"postgres\"},datname)",
+        "hide": 0,
+        "includeAll": false,
+        "multi": false,
+        "name": "Database",
+        "options": [],
+        "query": {
+          "qryType": 1,
+          "query": "label_values({job=\"postgres\"},datname)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "10",
+          "value": "10"
+        },
+        "hide": 0,
+        "includeAll": false,
+        "multi": false,
+        "name": "Top",
+        "options": [
+          {
+            "selected": true,
+            "text": "10",
+            "value": "10"
+          },
+          {
+            "selected": false,
+            "text": "20",
+            "value": "20"
+          },
+          {
+            "selected": false,
+            "text": "30",
+            "value": "30"
+          },
+          {
+            "selected": false,
+            "text": "50",
+            "value": "50"
+          },
+          {
+            "selected": false,
+            "text": "100",
+            "value": "100"
+          }
+        ],
+        "query": "10,20,30,50,100",
+        "queryValue": "",
+        "skipUrlSync": false,
+        "type": "custom"
       }
     ]
   },
   "time": {
-    "from": "2024-04-21T14:32:30.187Z",
-    "to": "2024-04-21T15:05:03.529Z"
+    "from": "now-15m",
+    "to": "now"
   },
   "timepicker": {},
   "timezone": "browser",
-  "title": "Vacuum",
-  "uid": "adjeu0soz0y68e",
-  "version": 3,
+  "title": "Vacuum Copy",
+  "uid": "adjj2ebf97chsd",
+  "version": 16,
   "weekStart": ""
 }

@@ -20,6 +20,7 @@
   "fiscalYearStartMonth": 0,
   "gnetId": 12485,
   "graphTooltip": 0,
+  "id": 9,
   "links": [
     {
       "asDropdown": false,
@@ -96,7 +97,7 @@
             "uid": "Prometheus"
           },
           "editorMode": "code",
-          "expr": "pg_database_size_bytes{datname=\"$Database\",server!=\"\"}",
+          "expr": "pg_database_size_bytes{datname=\"$Database\",server=\"$Server\", instance=\"$Instance\"}",
           "instant": false,
           "legendFormat": "{{datname}}",
           "range": true,
@@ -165,7 +166,7 @@
             "uid": "Prometheus"
           },
           "editorMode": "code",
-          "expr": "delta(pg_database_size_bytes{datname=\"$Database\",instance=\"$Instance\",server!=\"\"}[$__range])",
+          "expr": "delta(pg_database_size_bytes{datname=\"$Database\",instance=\"$Instance\",server=\"$Server\"}[$__range])",
           "instant": false,
           "legendFormat": "{{datname}}",
           "range": true,
@@ -235,7 +236,7 @@
             "uid": "Prometheus"
           },
           "editorMode": "code",
-          "expr": "delta(pg_stat_database_active_time_seconds_total{datname=\"$Database\"}[$__range])",
+          "expr": "delta(pg_stat_database_active_time_seconds_total{datname=\"$Database\",instance=\"$Instance\"}[$__range])",
           "instant": false,
           "legendFormat": "__auto",
           "range": true,
@@ -248,7 +249,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "Prometheus"
+        "uid": "PBFA97CFB590B2093"
       },
       "fieldConfig": {
         "defaults": {
@@ -269,7 +270,7 @@
               }
             ]
           },
-          "unit": "ms"
+          "unit": "s"
         },
         "overrides": []
       },
@@ -304,9 +305,9 @@
             "uid": "Prometheus"
           },
           "editorMode": "code",
-          "expr": "delta(pg_stat_database_idle_in_transaction_time{datname=\"$Database\"}[$__range])",
+          "expr": "max(pg_stat_activity_max_tx_duration{datname=\"$Database\",state=\"idle in transaction\",instance=\"$Instance\",server=\"$Server\"})",
           "instant": false,
-          "legendFormat": "__auto",
+          "legendFormat": "Duration",
           "range": true,
           "refId": "A"
         }
@@ -317,26 +318,29 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "Prometheus"
+        "uid": "PBFA97CFB590B2093"
       },
       "fieldConfig": {
         "defaults": {
           "color": {
-            "fixedColor": "orange",
-            "mode": "palette-classic"
+            "mode": "thresholds"
           },
           "mappings": [],
           "min": 0,
           "thresholds": {
-            "mode": "absolute",
+            "mode": "percentage",
             "steps": [
               {
                 "color": "green",
                 "value": null
               },
               {
+                "color": "#EAB839",
+                "value": 80
+              },
+              {
                 "color": "red",
-                "value": 200000000
+                "value": 90
               }
             ]
           },
@@ -361,17 +365,16 @@
         ]
       },
       "gridPos": {
-        "h": 3,
+        "h": 6,
         "w": 4,
-        "x": 20,
+        "x": 16,
         "y": 0
       },
-      "id": 27,
+      "id": 39,
       "options": {
-        "colorMode": "value",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "vertical",
+        "minVizHeight": 75,
+        "minVizWidth": 75,
+        "orientation": "horizontal",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
@@ -379,9 +382,9 @@
           "fields": "",
           "values": false
         },
-        "showPercentChange": false,
-        "textMode": "auto",
-        "wideLayout": true
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true,
+        "sizing": "auto"
       },
       "pluginVersion": "10.4.2",
       "targets": [
@@ -391,15 +394,34 @@
             "uid": "Prometheus"
           },
           "editorMode": "code",
-          "expr": "max(pg_database_freeze_age{datname=\"$Database\"})",
+          "expr": "pg_database_freeze_age{datname=\"$Database\",server=\"$Server\",instance=\"$Instance\"}",
           "instant": false,
           "legendFormat": "Age",
           "range": true,
           "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "expr": "pg_settings_autovacuum_freeze_max_age{instance=\"$Instance\",server=\"$Server\"}",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "Max",
+          "range": true,
+          "refId": "config"
         }
       ],
       "title": "Non-Frozen Transactions Age",
-      "type": "stat"
+      "transformations": [
+        {
+          "id": "configFromData",
+          "options": {}
+        }
+      ],
+      "type": "gauge"
     },
     {
       "datasource": {
@@ -473,7 +495,132 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "Prometheus"
+        "uid": "PBFA97CFB590B2093"
+      },
+      "description": "Transactions committed + roolback per minute\n\nSource: pg_stat_database,xact_commit + xact_rollback",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "rgb(31, 120, 193)",
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 20,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "normal"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [
+            {
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "N/A"
+                }
+              },
+              "type": "special"
+            }
+          ],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 0,
+        "y": 6
+      },
+      "id": 14,
+      "interval": "",
+      "maxDataPoints": 100,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "10.4.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "Prometheus"
+          },
+          "editorMode": "code",
+          "expr": "sum((rate(pg_stat_database_xact_commit{instance=\"$Instance\",datname=\"$Database\"}[$__range])))",
+          "interval": "",
+          "legendFormat": "Commits",
+          "range": true,
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "expr": "sum((rate(pg_stat_database_xact_rollback{instance=\"$Instance\",datname=\"$Database\"}[$__range])))",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "Rollbacks",
+          "range": true,
+          "refId": "B"
+        }
+      ],
+      "title": "Transaction rate",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
       },
       "fieldConfig": {
         "defaults": {
@@ -530,10 +677,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 6,
+        "h": 7,
         "w": 12,
         "x": 12,
-        "y": 3
+        "y": 6
       },
       "id": 30,
       "options": {
@@ -544,7 +691,7 @@
           "showLegend": true
         },
         "tooltip": {
-          "mode": "single",
+          "mode": "multi",
           "sort": "none"
         }
       },
@@ -555,7 +702,7 @@
             "uid": "Prometheus"
           },
           "editorMode": "code",
-          "expr": "sum by (state) (pg_stat_activity_count{datname=\"$Database\"})",
+          "expr": "sum by (state) (pg_stat_activity_count{datname=\"$Database\",instance=\"$Instance\",server=\"$Server\"})",
           "instant": false,
           "legendFormat": "__auto",
           "range": true,
@@ -564,137 +711,11 @@
       ],
       "title": "Connections by State",
       "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PBFA97CFB590B2093"
-      },
-      "description": "Transactions committed + roolback per minute\n\nSource: pg_stat_database,xact_commit + xact_rollback",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "fixedColor": "rgb(31, 120, 193)",
-            "mode": "fixed"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 20,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "never",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [
-            {
-              "options": {
-                "match": "null",
-                "result": {
-                  "text": "N/A"
-                }
-              },
-              "type": "special"
-            }
-          ],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "none"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 7,
-        "w": 12,
-        "x": 0,
-        "y": 6
-      },
-      "id": 14,
-      "interval": "",
-      "maxDataPoints": 100,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "10.4.2",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "Prometheus"
-          },
-          "editorMode": "code",
-          "expr": "sum((rate(pg_stat_database_xact_commit{instance=\"$Instance\",datname=\"$Database\"}[$__range])))",
-          "interval": "",
-          "legendFormat": "Commits",
-          "range": true,
-          "refId": "A"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
-          },
-          "editorMode": "code",
-          "expr": "sum((rate(pg_stat_database_xact_rollback{instance=\"$Instance\",datname=\"$Database\"}[$__range])))",
-          "hide": false,
-          "instant": false,
-          "legendFormat": "Rollbacks",
-          "range": true,
-          "refId": "B"
-        }
-      ],
-      "title": "Transaction rate",
-      "type": "timeseries"
     }
   ],
   "refresh": "1m",
   "schemaVersion": 39,
-  "tags": [
-    "postgresql"
-  ],
+  "tags": ["postgresql"],
   "templating": {
     "list": [
       {
@@ -708,14 +729,42 @@
           "uid": "PBFA97CFB590B2093"
         },
         "definition": "label_values({job=\"postgres\"},instance)",
-        "hide": 0,
+        "hide": 2,
         "includeAll": false,
+        "label": "Exporter",
         "multi": false,
         "name": "Instance",
         "options": [],
         "query": {
           "qryType": 1,
           "query": "label_values({job=\"postgres\"},instance)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "host.docker.internal:5432",
+          "value": "host.docker.internal:5432"
+        },
+        "datasource": {
+          "type": "prometheus",
+          "uid": "PBFA97CFB590B2093"
+        },
+        "definition": "label_values({job=\"postgres\"},server)",
+        "hide": 2,
+        "includeAll": false,
+        "multi": false,
+        "name": "Server",
+        "options": [],
+        "query": {
+          "qryType": 1,
+          "query": "label_values({job=\"postgres\"},server)",
           "refId": "PrometheusVariableQueryEditor-VariableQuery"
         },
         "refresh": 1,
@@ -754,7 +803,7 @@
     ]
   },
   "time": {
-    "from": "now-5m",
+    "from": "now-30m",
     "to": "now"
   },
   "timepicker": {
@@ -769,8 +818,8 @@
     ]
   },
   "timezone": "",
-  "title": "Database Overview",
-  "uid": "fdjbz1qqsqhogd",
-  "version": 1,
+  "title": "Database Overview Copy",
+  "uid": "adjigubaqca2oc",
+  "version": 7,
   "weekStart": ""
 }
