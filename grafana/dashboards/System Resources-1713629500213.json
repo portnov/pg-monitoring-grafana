@@ -400,7 +400,7 @@
     "list": [
       {
         "current": {
-          "selected": false,
+          "selected": true,
           "text": "postgres-exporter:9187",
           "value": "postgres-exporter:9187"
         },
@@ -455,7 +455,7 @@
       },
       {
         "current": {
-          "selected": false,
+          "selected": true,
           "text": "host.docker.internal:5432",
           "value": "host.docker.internal:5432"
         },
