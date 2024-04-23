@@ -21,6 +21,7 @@ services:
       - pg_monitoring
     volumes:
       - "./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml"
+      - "${PROMETHEUS_STORAGE}:/prometheus"
     environment:
       NO_PROXY: localhost,127.0.0.1,prometheus,postgres-exporter
   postgres-exporter:
