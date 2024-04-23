@@ -20,7 +20,7 @@
   "fiscalYearStartMonth": 0,
   "gnetId": 12485,
   "graphTooltip": 0,
-  "id": 8,
+  "id": 6,
   "links": [
     {
       "asDropdown": false,
@@ -178,7 +178,7 @@
             "uid": "Prometheus"
           },
           "editorMode": "code",
-          "expr": "pg_postmaster_start_time_seconds{instance=\"$Instance\",server=\"$Server\"} / 1000",
+          "expr": "time() - pg_postmaster_start_time_seconds{instance=\"$Instance\",server=\"$Server\"}",
           "instant": false,
           "legendFormat": "__auto",
           "range": true,
@@ -1354,12 +1354,14 @@
   ],
   "refresh": "1m",
   "schemaVersion": 39,
-  "tags": ["postgresql"],
+  "tags": [
+    "postgresql"
+  ],
   "templating": {
     "list": [
       {
         "current": {
-          "selected": true,
+          "selected": false,
           "text": "postgres-exporter:9187",
           "value": "postgres-exporter:9187"
         },
@@ -1387,7 +1389,7 @@
       },
       {
         "current": {
-          "selected": true,
+          "selected": false,
           "text": "host.docker.internal:5432",
           "value": "host.docker.internal:5432"
         },
@@ -1416,7 +1418,7 @@
     ]
   },
   "time": {
-    "from": "now-30m",
+    "from": "now-15m",
     "to": "now"
   },
   "timepicker": {
@@ -1433,6 +1435,6 @@
   "timezone": "",
   "title": "Cluster Overview",
   "uid": "bdjif9cdplypsd",
-  "version": 13,
+  "version": 1,
   "weekStart": ""
 }
