@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 14,
+  "id": 10,
   "links": [
     {
       "asDropdown": false,
@@ -79,6 +79,12 @@
               "mode": "off"
             }
           },
+          "links": [
+            {
+              "title": "Table Details",
+              "url": "/d/fdjp7sup692pse/table-details?orgId=1&${__url_time_range}&${__all_variables}&var-Table=${__series.name}"
+            }
+          ],
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -217,6 +223,12 @@
               "mode": "area"
             }
           },
+          "links": [
+            {
+              "title": "Table Details",
+              "url": "/d/fdjp7sup692pse/table-details?orgId=1&${__url_time_range}&${__all_variables}&var-Table=${__series.name}"
+            }
+          ],
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -326,6 +338,12 @@
               "mode": "off"
             }
           },
+          "links": [
+            {
+              "title": "Table Details",
+              "url": "/d/fdjp7sup692pse/table-details?orgId=1&${__url_time_range}&${__all_variables}&var-Table=${__series.name}"
+            }
+          ],
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -402,7 +420,6 @@
       "type": "timeseries"
     }
   ],
-  "refresh": "",
   "schemaVersion": 39,
   "tags": ["postgresql"],
   "templating": {
@@ -534,13 +551,13 @@
     ]
   },
   "time": {
-    "from": "now-15m",
-    "to": "now"
+    "from": "2024-04-23T06:13:14.313Z",
+    "to": "2024-04-23T06:35:38.733Z"
   },
   "timepicker": {},
   "timezone": "browser",
   "title": "Vacuum",
-  "uid": "adjj2ebf97chsd",
-  "version": 16,
+  "uid": "cdjpjhhvw15vkf",
+  "version": 1,
   "weekStart": ""
 }
