@@ -20,7 +20,7 @@
   "fiscalYearStartMonth": 0,
   "gnetId": 12485,
   "graphTooltip": 0,
-  "id": 8,
+  "id": 3,
   "links": [
     {
       "asDropdown": false,
@@ -141,6 +141,21 @@
                 }
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "HOT Updates"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "yellow",
+                  "mode": "fixed"
+                }
+              }
+            ]
           }
         ]
       },
@@ -204,6 +219,19 @@
           "legendFormat": "Deletes",
           "range": true,
           "refId": "C"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "expr": "rate(pg_stat_user_tables_n_tup_hot_upd{datname=\"$Database\",server=\"$Server\",instance=\"$Instance\",relname=\"$Table\"}[$__rate_interval])",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "HOT Updates",
+          "range": true,
+          "refId": "D"
         }
       ],
       "title": "Inserts, Updates, Deletes Rate",
@@ -1170,8 +1198,8 @@
       {
         "current": {
           "selected": true,
-          "text": "tran_2024_04_23",
-          "value": "tran_2024_04_23"
+          "text": "doer_2024_04_24",
+          "value": "doer_2024_04_24"
         },
         "datasource": {
           "type": "prometheus",
@@ -1197,8 +1225,8 @@
     ]
   },
   "time": {
-    "from": "2024-04-23T06:13:14.313Z",
-    "to": "2024-04-23T06:35:38.733Z"
+    "from": "2024-04-24T18:22:37.173Z",
+    "to": "2024-04-24T18:37:10.809Z"
   },
   "timepicker": {
     "refresh_intervals": [
