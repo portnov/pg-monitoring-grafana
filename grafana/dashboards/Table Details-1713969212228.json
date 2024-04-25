@@ -96,7 +96,53 @@
           },
           "unit": "ops"
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Inserts"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "green",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Updates"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "orange",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Deletes"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "red",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 9,
@@ -333,7 +379,23 @@
           },
           "unit": "ops"
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Sequential"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "orange",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 8,
@@ -508,7 +570,8 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "palette-classic"
+            "fixedColor": "blue",
+            "mode": "fixed"
           },
           "custom": {
             "axisBorderShow": false,
@@ -617,7 +680,8 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "palette-classic"
+            "fixedColor": "purple",
+            "mode": "fixed"
           },
           "custom": {
             "axisBorderShow": false,
@@ -868,11 +932,12 @@
             "uid": "PBFA97CFB590B2093"
           },
           "editorMode": "code",
-          "expr": "pg_stat_user_tables_n_dead_tup{datname=\"portnov\",server=\"$Server\",instance=\"$Instance\",relname=\"$Table\"}",
+          "expr": "pg_stat_user_tables_n_live_tup{datname=\"portnov\",server=\"$Server\",instance=\"$Instance\",relname=\"$Table\"}",
+          "hide": false,
           "instant": false,
-          "legendFormat": "Dead Tuples",
+          "legendFormat": "Live Tuples",
           "range": true,
-          "refId": "A"
+          "refId": "B"
         },
         {
           "datasource": {
@@ -880,12 +945,11 @@
             "uid": "PBFA97CFB590B2093"
           },
           "editorMode": "code",
-          "expr": "pg_stat_user_tables_n_live_tup{datname=\"portnov\",server=\"$Server\",instance=\"$Instance\",relname=\"$Table\"}",
-          "hide": false,
+          "expr": "pg_stat_user_tables_n_dead_tup{datname=\"portnov\",server=\"$Server\",instance=\"$Instance\",relname=\"$Table\"}",
           "instant": false,
-          "legendFormat": "Live Tuples",
+          "legendFormat": "Dead Tuples",
           "range": true,
-          "refId": "B"
+          "refId": "A"
         }
       ],
       "title": "Dead vs Live Tuples",
@@ -900,7 +964,8 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "palette-classic"
+            "fixedColor": "blue",
+            "mode": "fixed"
           },
           "custom": {
             "axisBorderShow": false,
@@ -1104,9 +1169,9 @@
       },
       {
         "current": {
-          "selected": false,
-          "text": "account",
-          "value": "account"
+          "selected": true,
+          "text": "tran_2024_04_23",
+          "value": "tran_2024_04_23"
         },
         "datasource": {
           "type": "prometheus",
@@ -1132,8 +1197,8 @@
     ]
   },
   "time": {
-    "from": "now-30m",
-    "to": "now"
+    "from": "2024-04-23T06:13:14.313Z",
+    "to": "2024-04-23T06:35:38.733Z"
   },
   "timepicker": {
     "refresh_intervals": [
@@ -1149,6 +1214,6 @@
   "timezone": "",
   "title": "Table Details",
   "uid": "fdjp7sup692pse",
-  "version": 26,
+  "version": 1,
   "weekStart": ""
 }

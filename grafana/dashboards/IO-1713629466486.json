@@ -20,7 +20,7 @@
   "fiscalYearStartMonth": 0,
   "gnetId": 12485,
   "graphTooltip": 0,
-  "id": 11,
+  "id": 5,
   "links": [
     {
       "asDropdown": false,
@@ -214,7 +214,35 @@
           },
           "unit": "binBps"
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Checkpoints Count"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "red",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "unit",
+                "value": "ops"
+              },
+              {
+                "id": "custom.drawStyle",
+                "value": "bars"
+              },
+              {
+                "id": "custom.fillOpacity",
+                "value": 0
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 9,
@@ -273,6 +301,19 @@
           "legendFormat": "Backends",
           "range": true,
           "refId": "C"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "expr": "rate(pg_stat_bgwriter_checkpoints_req_total{instance=\"$Instance\"}[$__rate_interval]) + rate(pg_stat_bgwriter_checkpoints_timed_total{instance=\"$Instance\"}[$__rate_interval])",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "Checkpoints Count",
+          "range": true,
+          "refId": "D"
         }
       ],
       "title": "Data File Writes",
@@ -790,9 +831,11 @@
       "type": "timeseries"
     }
   ],
-  "refresh": "1m",
+  "refresh": "",
   "schemaVersion": 39,
-  "tags": ["postgresql"],
+  "tags": [
+    "postgresql"
+  ],
   "templating": {
     "list": [
       {
@@ -853,8 +896,8 @@
     ]
   },
   "time": {
-    "from": "now-15m",
-    "to": "now"
+    "from": "2024-04-24T18:21:53.588Z",
+    "to": "2024-04-24T18:37:51.763Z"
   },
   "timepicker": {
     "refresh_intervals": [
@@ -870,6 +913,6 @@
   "timezone": "",
   "title": "Cluster IO",
   "uid": "adjivxfdo8jcwe",
-  "version": 8,
+  "version": 1,
   "weekStart": ""
 }
