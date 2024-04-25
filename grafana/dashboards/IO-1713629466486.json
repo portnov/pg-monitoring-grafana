@@ -20,7 +20,7 @@
   "fiscalYearStartMonth": 0,
   "gnetId": 12485,
   "graphTooltip": 0,
-  "id": 5,
+  "id": 11,
   "links": [
     {
       "asDropdown": false,
@@ -218,7 +218,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Checkpoints Count"
+              "options": "Checkpoints by WAL"
             },
             "properties": [
               {
@@ -235,6 +235,33 @@
               {
                 "id": "custom.drawStyle",
                 "value": "bars"
+              },
+              {
+                "id": "custom.fillOpacity",
+                "value": 0
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Checkpoints by Time"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "orange",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "custom.drawStyle",
+                "value": "bars"
+              },
+              {
+                "id": "unit",
+                "value": "ops"
               },
               {
                 "id": "custom.fillOpacity",
@@ -308,12 +335,25 @@
             "uid": "PBFA97CFB590B2093"
           },
           "editorMode": "code",
-          "expr": "rate(pg_stat_bgwriter_checkpoints_req_total{instance=\"$Instance\"}[$__rate_interval]) + rate(pg_stat_bgwriter_checkpoints_timed_total{instance=\"$Instance\"}[$__rate_interval])",
+          "expr": "rate(pg_stat_bgwriter_checkpoints_req_total{instance=\"$Instance\"}[$__rate_interval])",
           "hide": false,
           "instant": false,
-          "legendFormat": "Checkpoints Count",
+          "legendFormat": "Checkpoints by WAL",
           "range": true,
           "refId": "D"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "expr": "rate(pg_stat_bgwriter_checkpoints_timed_total{instance=\"$Instance\"}[$__rate_interval])",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "Checkpoints by Time",
+          "range": true,
+          "refId": "E"
         }
       ],
       "title": "Data File Writes",
@@ -833,9 +873,7 @@
   ],
   "refresh": "",
   "schemaVersion": 39,
-  "tags": [
-    "postgresql"
-  ],
+  "tags": ["postgresql"],
   "templating": {
     "list": [
       {
@@ -896,8 +934,8 @@
     ]
   },
   "time": {
-    "from": "2024-04-24T18:21:53.588Z",
-    "to": "2024-04-24T18:37:51.763Z"
+    "from": "2024-04-25T09:11:26.517Z",
+    "to": "2024-04-25T09:21:37.595Z"
   },
   "timepicker": {
     "refresh_intervals": [
@@ -912,7 +950,7 @@
   },
   "timezone": "",
   "title": "Cluster IO",
-  "uid": "adjivxfdo8jcwe",
+  "uid": "bdjtiuttq9r7kb",
   "version": 1,
   "weekStart": ""
 }

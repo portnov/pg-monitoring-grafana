@@ -20,7 +20,7 @@
   "fiscalYearStartMonth": 0,
   "gnetId": 12485,
   "graphTooltip": 0,
-  "id": 3,
+  "id": 9,
   "links": [
     {
       "asDropdown": false,
@@ -1108,9 +1108,7 @@
     }
   ],
   "schemaVersion": 39,
-  "tags": [
-    "postgresql"
-  ],
+  "tags": ["postgresql"],
   "templating": {
     "list": [
       {
@@ -1197,7 +1195,7 @@
       },
       {
         "current": {
-          "selected": true,
+          "selected": false,
           "text": "doer_2024_04_24",
           "value": "doer_2024_04_24"
         },
