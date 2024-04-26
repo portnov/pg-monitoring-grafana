@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 10,
+  "id": 3,
   "links": [
     {
       "asDropdown": false,
@@ -418,10 +418,136 @@
       ],
       "title": "Autovacuum Activity by Table",
       "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "description": "Displays number of autoanalyze invocations per table. Only top $Top tables where autovacuum is most active are shown.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "smooth",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "links": [
+            {
+              "title": "Table Details",
+              "url": "/d/fdjp7sup692pse/table-details?orgId=1&${__url_time_range}&${__all_variables}&var-Table=${__series.name}"
+            }
+          ],
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "eps"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byValue",
+              "options": {
+                "op": "gte",
+                "reducer": "allIsZero",
+                "value": 0
+              }
+            },
+            "properties": [
+              {
+                "id": "custom.hideFrom",
+                "value": {
+                  "legend": true,
+                  "tooltip": true,
+                  "viz": true
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 24,
+        "x": 0,
+        "y": 29
+      },
+      "id": 5,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "Prometheus"
+          },
+          "editorMode": "code",
+          "expr": "topk($Top, rate(pg_stat_user_tables_autoanalyze_count{datname=\"$Database\",server=\"$Server\",instance=\"$Instance\"}[$__rate_interval]))",
+          "instant": false,
+          "legendFormat": "{{relname}}",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Auto Analyze Activity by Table",
+      "type": "timeseries"
     }
   ],
   "schemaVersion": 39,
-  "tags": ["postgresql"],
+  "tags": [
+    "postgresql"
+  ],
   "templating": {
     "list": [
       {
@@ -551,8 +677,8 @@
     ]
   },
   "time": {
-    "from": "2024-04-23T06:13:14.313Z",
-    "to": "2024-04-23T06:35:38.733Z"
+    "from": "2024-04-26T07:50:49.469Z",
+    "to": "2024-04-26T07:58:53.489Z"
   },
   "timepicker": {},
   "timezone": "browser",

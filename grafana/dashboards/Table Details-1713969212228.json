@@ -20,7 +20,7 @@
   "fiscalYearStartMonth": 0,
   "gnetId": 12485,
   "graphTooltip": 0,
-  "id": 9,
+  "id": 1,
   "links": [
     {
       "asDropdown": false,
@@ -43,6 +43,7 @@
         "type": "prometheus",
         "uid": "PBFA97CFB590B2093"
       },
+      "description": "Number of Insert, Update, Delete operations per second.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -242,6 +243,7 @@
         "type": "prometheus",
         "uid": "PBFA97CFB590B2093"
       },
+      "description": "Number of hits (in PG's buffer cache) from this table's heap, index and corresponding TOAST files.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -344,6 +346,32 @@
           "legendFormat": "Index Hits",
           "range": true,
           "refId": "B"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "expr": "8192*rate(pg_statio_user_tables_toast_blks_hit{datname=\"$Database\",server=\"$Server\",instance=\"$Instance\",relname=\"$Table\"}[$__rate_interval])",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "TOAST Heap Hits",
+          "range": true,
+          "refId": "C"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "expr": "8192*rate(pg_statio_user_tables_tidx_blks_hit{datname=\"$Database\",server=\"$Server\",instance=\"$Instance\",relname=\"$Table\"}[$__rate_interval])",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "TOAST Index Hits",
+          "range": true,
+          "refId": "D"
         }
       ],
       "title": "Heap and Index Hits",
@@ -354,6 +382,7 @@
         "type": "prometheus",
         "uid": "PBFA97CFB590B2093"
       },
+      "description": "Number of sequential scans per second vs number of index scans per second. Note that this includes not only SELECT queries, but, for example, UPDATEs as well.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -482,6 +511,7 @@
         "type": "prometheus",
         "uid": "PBFA97CFB590B2093"
       },
+      "description": "Number of \"reads\" from table's heap, index and corresponding TOAST files. Note that \"read\" in this context means read from OS's page cache, not necessarily read from disk.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -584,9 +614,253 @@
           "legendFormat": "Index Reads",
           "range": true,
           "refId": "B"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "expr": "8192*rate(pg_statio_user_tables_toast_blks_read{datname=\"$Database\",server=\"$Server\",instance=\"$Instance\",relname=\"$Table\"}[$__rate_interval])",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "TOAST Heap Reads",
+          "range": true,
+          "refId": "C"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "expr": "8192*rate(pg_statio_user_tables_tidx_blks_read{datname=\"$Database\",server=\"$Server\",instance=\"$Instance\",relname=\"$Table\"}[$__rate_interval])",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "TOAST Index Reads",
+          "range": true,
+          "refId": "D"
         }
       ],
       "title": "Heap and Index Reads",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": 3600000,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "links": [
+            {
+              "title": "Table Details",
+              "url": "/d/fdjp7sup692pse/table-details?orgId=1&${__url_time_range}&${__all_variables}&var-Table=${__series.name}"
+            }
+          ],
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "bytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 17
+      },
+      "id": 39,
+      "options": {
+        "legend": {
+          "calcs": [
+            "min",
+            "mean",
+            "max",
+            "lastNotNull"
+          ],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "pg_stat_user_tables_size_bytes{instance=\"$Instance\",relname=\"$Table\"}",
+          "instant": false,
+          "legendFormat": "{{relname}}",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Table Size",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": 3600000,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "links": [
+            {
+              "title": "Table Details",
+              "url": "/d/fdjp7sup692pse/table-details?orgId=1&${__url_time_range}&${__all_variables}&var-Table=${__series.name}"
+            }
+          ],
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "binBps"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 17
+      },
+      "id": 40,
+      "options": {
+        "legend": {
+          "calcs": [
+            "min",
+            "mean",
+            "max",
+            "lastNotNull"
+          ],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "delta(pg_stat_user_tables_size_bytes{instance=\"$Instance\",relname=\"$Table\"}[$__rate_interval])",
+          "instant": false,
+          "legendFormat": "{{relname}}",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Table Size Growth",
       "type": "timeseries"
     },
     {
@@ -667,7 +941,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 17
+        "y": 25
       },
       "id": 36,
       "options": {
@@ -806,7 +1080,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 17
+        "y": 25
       },
       "id": 35,
       "options": {
@@ -933,7 +1207,7 @@
         "h": 9,
         "w": 12,
         "x": 0,
-        "y": 25
+        "y": 33
       },
       "id": 37,
       "options": {
@@ -1063,6 +1337,21 @@
                 }
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Auto Analyze Events"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "green",
+                  "mode": "fixed"
+                }
+              }
+            ]
           }
         ]
       },
@@ -1070,7 +1359,7 @@
         "h": 9,
         "w": 12,
         "x": 12,
-        "y": 25
+        "y": 33
       },
       "id": 38,
       "options": {
@@ -1085,7 +1374,7 @@
           "showLegend": true
         },
         "tooltip": {
-          "mode": "single",
+          "mode": "multi",
           "sort": "none"
         }
       },
@@ -1101,14 +1390,29 @@
           "legendFormat": "Autovacuum Events",
           "range": true,
           "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "expr": "rate(pg_stat_user_tables_autoanalyze_count{datname=\"$Database\",server=\"$Server\",instance=\"$Instance\",relname=\"$Table\"}[$__rate_interval])",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "Auto Analyze Events",
+          "range": true,
+          "refId": "B"
         }
       ],
-      "title": "Autovacuum Activity",
+      "title": "Autovacuum & Auto Analyze Activity",
       "type": "timeseries"
     }
   ],
   "schemaVersion": 39,
-  "tags": ["postgresql"],
+  "tags": [
+    "postgresql"
+  ],
   "templating": {
     "list": [
       {
@@ -1196,8 +1500,8 @@
       {
         "current": {
           "selected": false,
-          "text": "doer_2024_04_24",
-          "value": "doer_2024_04_24"
+          "text": "rdx_pgsessionattr",
+          "value": "rdx_pgsessionattr"
         },
         "datasource": {
           "type": "prometheus",
@@ -1223,8 +1527,8 @@
     ]
   },
   "time": {
-    "from": "2024-04-24T18:22:37.173Z",
-    "to": "2024-04-24T18:37:10.809Z"
+    "from": "2024-04-26T07:50:49.469Z",
+    "to": "2024-04-26T07:58:53.489Z"
   },
   "timepicker": {
     "refresh_intervals": [
