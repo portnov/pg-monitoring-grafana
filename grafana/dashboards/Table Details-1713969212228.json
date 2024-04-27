@@ -963,7 +963,7 @@
             "uid": "PBFA97CFB590B2093"
           },
           "editorMode": "code",
-          "expr": "100*(pg_stat_user_tables_n_dead_tup{datname=\"portnov\",server=\"$Server\",instance=\"$Instance\",relname=\"$Table\"} / (pg_stat_user_tables_n_live_tup{datname=\"portnov\",server=\"$Server\",instance=\"$Instance\",relname=\"$Table\"} != 0 + pg_stat_user_tables_n_dead_tup{datname=\"portnov\",server=\"$Server\",instance=\"$Instance\",relname=\"$Table\"} > 50))",
+          "expr": "100*(pg_stat_user_tables_n_dead_tup{datname=\"$Database\",server=\"$Server\",instance=\"$Instance\",relname=\"$Table\"} / (pg_stat_user_tables_n_live_tup{datname=\"$Database\",server=\"$Server\",instance=\"$Instance\",relname=\"$Table\"} != 0 + pg_stat_user_tables_n_dead_tup{datname=\"$Database\",server=\"$Server\",instance=\"$Instance\",relname=\"$Table\"} > 50))",
           "instant": false,
           "legendFormat": "{{schemaname}}.{{relname}}",
           "range": true,
@@ -1234,7 +1234,7 @@
             "uid": "PBFA97CFB590B2093"
           },
           "editorMode": "code",
-          "expr": "pg_stat_user_tables_n_live_tup{datname=\"portnov\",server=\"$Server\",instance=\"$Instance\",relname=\"$Table\"}",
+          "expr": "pg_stat_user_tables_n_live_tup{datname=\"$Database\",server=\"$Server\",instance=\"$Instance\",relname=\"$Table\"}",
           "hide": false,
           "instant": false,
           "legendFormat": "Live Tuples",
@@ -1247,7 +1247,7 @@
             "uid": "PBFA97CFB590B2093"
           },
           "editorMode": "code",
-          "expr": "pg_stat_user_tables_n_dead_tup{datname=\"portnov\",server=\"$Server\",instance=\"$Instance\",relname=\"$Table\"}",
+          "expr": "pg_stat_user_tables_n_dead_tup{datname=\"$Database\",server=\"$Server\",instance=\"$Instance\",relname=\"$Table\"}",
           "instant": false,
           "legendFormat": "Dead Tuples",
           "range": true,
@@ -1527,8 +1527,8 @@
     ]
   },
   "time": {
-    "from": "2024-04-26T07:50:49.469Z",
-    "to": "2024-04-26T07:58:53.489Z"
+    "from": "now-30m",
+    "to": "now"
   },
   "timepicker": {
     "refresh_intervals": [
@@ -1544,6 +1544,6 @@
   "timezone": "",
   "title": "Table Details",
   "uid": "fdjp7sup692pse",
-  "version": 1,
+  "version": 3,
   "weekStart": ""
 }

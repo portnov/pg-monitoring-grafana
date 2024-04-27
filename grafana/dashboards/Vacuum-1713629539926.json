@@ -285,7 +285,7 @@
             "uid": "PBFA97CFB590B2093"
           },
           "editorMode": "code",
-          "expr": "topk($Top, 100*(pg_stat_user_tables_n_dead_tup{datname=\"portnov\",server=\"$Server\",instance=\"$Instance\"} / (pg_stat_user_tables_n_live_tup{datname=\"portnov\",server=\"$Server\",instance=\"$Instance\"} != 0 + pg_stat_user_tables_n_dead_tup{datname=\"portnov\",server=\"$Server\",instance=\"$Instance\"} > 50)))",
+          "expr": "topk($Top, 100*(pg_stat_user_tables_n_dead_tup{datname=\"$Database\",server=\"$Server\",instance=\"$Instance\"} / (pg_stat_user_tables_n_live_tup{datname=\"$Database\",server=\"$Server\",instance=\"$Instance\"} != 0 + pg_stat_user_tables_n_dead_tup{datname=\"$Database\",server=\"$Server\",instance=\"$Instance\"} > 50)))",
           "instant": false,
           "legendFormat": "{{schemaname}}.{{relname}}",
           "range": true,
@@ -473,8 +473,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -677,13 +676,13 @@
     ]
   },
   "time": {
-    "from": "2024-04-26T07:50:49.469Z",
-    "to": "2024-04-26T07:58:53.489Z"
+    "from": "now-30m",
+    "to": "now"
   },
   "timepicker": {},
   "timezone": "browser",
   "title": "Vacuum",
   "uid": "cdjpjhhvw15vkf",
-  "version": 1,
+  "version": 3,
   "weekStart": ""
 }
