@@ -365,3 +365,77 @@ pg_stat_kcache:
     - exec_writes:
         usage: "COUNTER"
         description: "Number of bytes written during query execution"
+
+pg_vacuum_settings:
+  query: |
+    select ns.nspname as schemaname, c.relname, s.name as parameter, coalesce(o.option_value, s.setting) as value
+    from pg_class c
+    inner join pg_namespace ns on ns.oid = c.relnamespace
+    cross join pg_settings s
+    left join (
+	    values
+		    ('autovacuum_freeze_min_age', 'vacuum_freeze_min_age'),
+		    ('autovacuum_freeze_table_age', 'vacuum_freeze_max_age')
+	    ) t (table_name, general_name) on t.general_name = s.name
+    left join pg_options_to_table(c.reloptions) o on t.table_name = o.option_name
+    where t.table_name in (
+	    'autovacuum_freeze_min_age',
+	    'autovacuum_freeze_table_age',
+	    'autovacuum_freeze_max_age',
+	    'autovacuum_vacuum_threshold',
+	    'autovacuum_vacuum_scale_factor',
+	    'autovacuum_vacuum_insert_threshold',
+	    'autovacuum_vacuum_insert_scale_factor'
+	    )
+    and c.relkind = 'r'
+    and c.relpersistence <> 't'
+    and s.name = t.general_name
+  cache_seconds: 60
+  metrics:
+    - schemaname:
+        usage: "LABEL"
+        description: "Table schema name"
+    - relname:
+        usage: "LABEL" 
+        description: "Name of the table"
+    - parameter:
+        usage: "LABEL"
+        description: "Parameter name"
+    - value:
+        usage: "GAUGE"
+        description: "Parameter value"
+
+pg_class:
+  query: |
+    select ns.nspname as schemaname, c.relname, age(c.relfrozenxid) as relfrozenxid_age
+    from pg_class c
+    inner join pg_namespace ns on ns.oid = c.relnamespace
+    where c.relkind = 'r'
+    and c.relpersistence <> 't'
+  cache_seconds: 60
+  metrics:
+    - schemaname:
+        usage: "LABEL"
+        description: "Table schema name"
+    - relname:
+        usage: "LABEL" 
+        description: "Name of the table"
+    - relfrozenxid_age: 
+        usage: "GAUGE"
+        description: "Age of last non-frozen tuple in the table"
+
+pg_class_temporary:
+  query: |
+    select c.relname, max(age(c.relfrozenxid)) as max_relfrozenxid_age
+    from pg_class c
+    where c.relkind = 'r'
+    and c.relpersistence = 't'
+    group by c.relname
+  cache_seconds: 60
+  metrics:
+    - relname:
+        usage: "LABEL" 
+        description: "Name of the table"
+    - max_relfrozenxid_age: 
+        usage: "GAUGE"
+        description: "Maximum age of last non-frozen tuple among all instances of the table"
