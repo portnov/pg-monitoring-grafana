@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 3,
+  "id": 5,
   "links": [
     {
       "asDropdown": false,
@@ -473,7 +473,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -541,8 +542,261 @@
       ],
       "title": "Auto Analyze Activity by Table",
       "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 38
+      },
+      "id": 6,
+      "options": {
+        "legend": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "expr": "topk($Top, pg_class_relfrozenxid_age{instance=\"$Instance\",server=\"$Server\"})",
+          "instant": false,
+          "legendFormat": "{{relname}}",
+          "range": true,
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "expr": "pg_settings_autovacuum_freeze_max_age{server=\"$Server\"}",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "freeze_max_age",
+          "range": true,
+          "refId": "config"
+        }
+      ],
+      "title": "Non-frozen tuple age - non-temporary tables",
+      "transformations": [
+        {
+          "id": "configFromData",
+          "options": {
+            "configRefId": "config",
+            "mappings": [
+              {
+                "fieldName": "freeze_max_age",
+                "handlerKey": "threshold1"
+              }
+            ]
+          }
+        }
+      ],
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 38
+      },
+      "id": 7,
+      "options": {
+        "legend": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "expr": "topk($Top, pg_class_temporary_max_relfrozenxid_age{instance=\"$Instance\",server=\"$Server\"})",
+          "instant": false,
+          "legendFormat": "{{relname}}",
+          "range": true,
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "expr": "pg_settings_autovacuum_freeze_max_age{server=\"$Server\"}",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "freeze_max_age",
+          "range": true,
+          "refId": "config"
+        }
+      ],
+      "title": "Non-frozen tuple age - temporary tables",
+      "transformations": [
+        {
+          "id": "configFromData",
+          "options": {
+            "configRefId": "config",
+            "mappings": [
+              {
+                "fieldName": "freeze_max_age",
+                "handlerKey": "threshold1"
+              }
+            ]
+          }
+        }
+      ],
+      "type": "timeseries"
     }
   ],
+  "refresh": "auto",
   "schemaVersion": 39,
   "tags": [
     "postgresql"
@@ -551,7 +805,7 @@
     "list": [
       {
         "current": {
-          "selected": true,
+          "selected": false,
           "text": "postgres-exporter:9187",
           "value": "postgres-exporter:9187"
         },
@@ -579,7 +833,7 @@
       },
       {
         "current": {
-          "selected": true,
+          "selected": false,
           "text": "host.docker.internal:5432",
           "value": "host.docker.internal:5432"
         },
@@ -633,9 +887,9 @@
       },
       {
         "current": {
-          "selected": false,
-          "text": "10",
-          "value": "10"
+          "selected": true,
+          "text": "20",
+          "value": "20"
         },
         "hide": 0,
         "includeAll": false,
@@ -643,12 +897,12 @@
         "name": "Top",
         "options": [
           {
-            "selected": true,
+            "selected": false,
             "text": "10",
             "value": "10"
           },
           {
-            "selected": false,
+            "selected": true,
             "text": "20",
             "value": "20"
           },
@@ -676,13 +930,13 @@
     ]
   },
   "time": {
-    "from": "now-30m",
+    "from": "now-5m",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "browser",
   "title": "Vacuum",
   "uid": "cdjpjhhvw15vkf",
-  "version": 3,
+  "version": 1,
   "weekStart": ""
 }
