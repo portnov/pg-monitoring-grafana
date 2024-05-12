@@ -20,7 +20,7 @@
   "fiscalYearStartMonth": 0,
   "gnetId": 12485,
   "graphTooltip": 0,
-  "id": 1,
+  "id": 3,
   "links": [
     {
       "asDropdown": false,
@@ -1407,6 +1407,143 @@
       ],
       "title": "Autovacuum & Auto Analyze Activity",
       "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 42
+      },
+      "id": 41,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "expr": "pg_class_relfrozenxid_age{relname=\"$Table\",server=\"$Server\",instance=\"$Instance\"}",
+          "instant": false,
+          "legendFormat": "{{relname}}",
+          "range": true,
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "expr": "pg_vacuum_settings_value{relname=\"$Table\",server=\"$Server\",instance=\"$Instance\",parameter=\"autovacuum_freeze_max_age\"}",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "{{parameter}}",
+          "range": true,
+          "refId": "freeze_max_age"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "expr": "pg_vacuum_settings_value{relname=\"$Table\",server=\"$Server\",instance=\"$Instance\",parameter=\"vacuum_freeze_min_age\"}",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "freeze_min_age"
+        }
+      ],
+      "title": "Non-frozen tuple age",
+      "transformations": [
+        {
+          "id": "configFromData",
+          "options": {
+            "configRefId": "freeze_max_age",
+            "mappings": [
+              {
+                "fieldName": "autovacuum_freeze_max_age",
+                "handlerKey": "threshold1"
+              }
+            ]
+          }
+        }
+      ],
+      "type": "timeseries"
     }
   ],
   "schemaVersion": 39,
@@ -1500,8 +1637,8 @@
       {
         "current": {
           "selected": false,
-          "text": "rdx_pgsessionattr",
-          "value": "rdx_pgsessionattr"
+          "text": "tran_2024_05_12",
+          "value": "tran_2024_05_12"
         },
         "datasource": {
           "type": "prometheus",
@@ -1527,7 +1664,7 @@
     ]
   },
   "time": {
-    "from": "now-30m",
+    "from": "now-5m",
     "to": "now"
   },
   "timepicker": {
@@ -1544,6 +1681,6 @@
   "timezone": "",
   "title": "Table Details",
   "uid": "fdjp7sup692pse",
-  "version": 3,
+  "version": 1,
   "weekStart": ""
 }
