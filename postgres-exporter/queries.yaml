@@ -439,3 +439,67 @@ pg_class_temporary:
     - max_relfrozenxid_age: 
         usage: "GAUGE"
         description: "Maximum age of last non-frozen tuple among all instances of the table"
+
+pg_statement_top_total:
+  query: |
+    select pg_get_userbyid(s.userid) as role,
+      d.datname,
+      s.queryid,
+      left(btrim(regexp_replace(query, '\s+', ' ')), 100) as query,
+      s.total_exec_time as exec_time_ms,
+      s.total_plan_time as plan_time_ms
+    from pg_stat_statements s
+    inner join pg_database d on d.oid = s.dbid
+    order by (s.total_exec_time + s.total_plan_time) desc
+    limit 100
+  metrics:
+    - role:
+        usage: "LABEL"
+        description: "Role that executed the statement"
+    - datname:
+        usage: "LABEL"
+        description: "Database in which the statement was executed"
+    - queryid:
+        usage: "LABEL"
+        description: "Internal hash code, computed from the statement's parse tree"
+    - query:
+        usage: "LABEL"
+        description: "First 100 characters of query text"
+    - exec_time_ms:
+        usage: "COUNTER"
+        description: "Time spent executing the statement, in milliseconds"
+    - plan_time_ms:
+        usage: "COUNTER"
+        description: "Time spent planning the statement, in milliseconds"
+
+pg_statement_top_exec:
+  query: |
+    select pg_get_userbyid(s.userid) as role,
+      d.datname,
+      s.queryid,
+      left(btrim(regexp_replace(query, '\s+', ' ')), 100) as query,
+      s.plans as plans_total,
+      s.calls as execs_total
+    from pg_stat_statements s
+    inner join pg_database d on d.oid = s.dbid
+    order by (s.plans + s.calls) desc
+    limit 100
+  metrics:
+    - role:
+        usage: "LABEL"
+        description: "Role that executed the statement"
+    - datname:
+        usage: "LABEL"
+        description: "Database in which the statement was executed"
+    - queryid:
+        usage: "LABEL"
+        description: "Internal hash code, computed from the statement's parse tree"
+    - query:
+        usage: "LABEL"
+        description: "First 100 characters of query text"
+    - plans_total:
+        usage: "COUNTER"
+        description: "Number of statement plannings"
+    - execs_total:
+        usage: "COUNTER"
+        description: "Number of statement executions"
