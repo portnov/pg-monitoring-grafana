@@ -20,7 +20,7 @@
   "fiscalYearStartMonth": 0,
   "gnetId": 12485,
   "graphTooltip": 0,
-  "id": 3,
+  "id": 6,
   "links": [
     {
       "asDropdown": false,
@@ -1458,10 +1458,6 @@
               {
                 "color": "green",
                 "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
               }
             ]
           },
@@ -1523,26 +1519,13 @@
           "expr": "pg_vacuum_settings_value{relname=\"$Table\",server=\"$Server\",instance=\"$Instance\",parameter=\"vacuum_freeze_min_age\"}",
           "hide": false,
           "instant": false,
-          "legendFormat": "__auto",
+          "interval": "",
+          "legendFormat": "{{parameter}}",
           "range": true,
           "refId": "freeze_min_age"
         }
       ],
       "title": "Non-frozen tuple age",
-      "transformations": [
-        {
-          "id": "configFromData",
-          "options": {
-            "configRefId": "freeze_max_age",
-            "mappings": [
-              {
-                "fieldName": "autovacuum_freeze_max_age",
-                "handlerKey": "threshold1"
-              }
-            ]
-          }
-        }
-      ],
       "type": "timeseries"
     }
   ],
